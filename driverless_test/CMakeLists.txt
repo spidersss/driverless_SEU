@@ -215,3 +215,8 @@ add_executable(lower_com src/serial_open.cpp src/lower_com.cpp)
 target_link_libraries(lower_com ${catkin_LIBRARIES})
 add_dependencies(lower_com ${${PROJECT_NAME}_EXPORTED_TARGETS})
 add_dependencies(lower_com ${catkin_EXPORTED_TARGETS})
+
+add_executable(gps_record src/gps_record.cpp)
+target_link_libraries(gps_record ${catkin_LIBRARIES})
+add_dependencies(gps_record ${${PROJECT_NAME}_EXPORTED_TARGETS})
+add_dependencies(gps_record ${catkin_EXPORTED_TARGETS})

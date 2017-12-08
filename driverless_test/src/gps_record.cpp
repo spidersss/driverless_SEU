@@ -1,0 +1,51 @@
+#include "ros/ros.h"
+#include "std_msgs/String.h"
+
+#include <sstream>
+#include <math.h>
+#include <stdio.h>
+#include <iostream>
+
+#include "driverless_test/gps_data.h"
+
+class gps_recordHandler
+{
+public:
+	gps_recordHandler()
+	{
+		gps_sub = nh.subscribe("gps_com", 1000, &gps_recordHandler::gps_recordCallback, this);
+		lat_pre = 0.0;
+		lon_pre = 0.0;
+		size = 0.00001;
+	}
+	void gps_recordCallback(const driverless_test::gps_data::ConstPtr& gps_data)
+	{
+		if( (f = fopen("~/gps_data/gps_record.txt", "a")) == NULL)///////无法打开 std::cout<<"error"<<std::endl;
+		if(abs(lat_pre - gps_data->lat) > size || abs(lon_pre - gps_data->lon) > size){
+			fprintf(f, "%.8lf\t%.8lf\t%.1lf\n", gps_data->lat, gps_data->lon, gps_data->yaw);
+			//fflush(f);
+			//duphandle = dup(fileno(f));
+			//close(duphandle);
+			fclose(f);
+		}
+		lat_pre = gps_data->lat;
+		lon_pre = gps_data->lon;
+	}
+protected:
+	ros::NodeHandle nh;
+	ros::Subscriber gps_sub;
+	double lat_pre, lon_pre, size;
+	int duphandle;
+	FILE* f;
+};
+
+int main(int argc, char **argv)
+{
+  ros::init(argc, argv, "gps_record");
+
+  gps_recordHandler handler;
+  
+  ros::spin();
+
+  return 0;
+}

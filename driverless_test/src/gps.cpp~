@@ -2,6 +2,7 @@
 #include "std_msgs/String.h"
 
 #include <sstream>
+#include <stdio.h>
 
 #include "serial_open.h"
 #include "gps_com.h"
@@ -44,8 +45,8 @@ int main(int argc, char **argv)
     gps_data.lon = gps_mes.lon;
     gps_data.yaw = gps_mes.yaw;
 
-    ROS_INFO("%d\t%d\t%f\t%f\t%f", gps_data.id,gps_data.len,gps_data.lat,gps_data.lon,gps_data.yaw);
-
+    //ROS_INFO("id: %d\tlen: %d\tlat: %f\tlon: %f\tyaw: %f", gps_data.id,gps_data.len,gps_data.lat,gps_data.lon,gps_data.yaw);
+	std::cout<<gps_data.lat<<"\t"<<gps_data.lon<<std::endl;
    	gps_pub.publish(gps_data);
    	
     ros::spinOnce();
