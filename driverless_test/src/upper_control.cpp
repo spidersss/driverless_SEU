@@ -4,6 +4,7 @@
 
 #include <math.h>
 
+#include "pid_controller.h"
 #include "driverless_test/gps_data.h"
 #include "driverless_test/control_data.h"
 #include "driverless_test/driverless_Config.h"
@@ -31,6 +32,9 @@ public:
 	    ros::param::get("~endlat", endlat);
 	    ros::param::get("~endlon", endlon);
 	    ros::param::get("~speed", speed);
+	    
+	    pid_init(pid_ctrl);
+	    pid_set_frequency(pid_ctrl, 20);
 	}
 	void callbackConfig(driverless_test::driverless_Config &config, uint32_t level)
 	{
@@ -39,9 +43,7 @@ public:
 			config.inte,
 			config.diff,
 			config.size);
-		prop = config.prop;
-		inte = config.inte;
-		diff = config.diff;
+		pid_set_gains(pid_ctrl, config.prop, config.inte, config.diff);
 	}
 
 	void controlCallback(const driverless_test::gps_data::ConstPtr& gps_msg)
@@ -58,9 +60,12 @@ public:
 	  if(t_yaw < 0) t_yaw = t_yaw + 360;
 	  ROS_INFO("t_yaw: %f\tdisToend: %f", t_yaw,disToend);
 	  pre_steer = control_data.steer;
+	  yaw_error = t_yaw - gps_msg->yaw;
+	  if(yaw_error < 2 && yaw_error > -2) pid_reset_integral(pid_ctrl);
 	  if(times > 0 ){
-		control_data.steer = prop * (t_yaw - gps_msg->yaw);
+		control_data.steer = pid_process(pid_ctrl, yaw_error);
 	  }
+	  /*
 	  if(control_data.steer == 0){
 		if(visit_flag == 1) {visit_flag = 0;}
 		else{
@@ -70,7 +75,7 @@ public:
 			visit_flag = 1;
 		}
 	  }
-				
+	  */		
 	  if( disToend < 1 ){
 		stop_flag = 1;
 	  }
@@ -87,12 +92,12 @@ protected:
 	ros::Subscriber control_sub;
 	dynamic_reconfigure::Server<driverless_test::driverless_Config> server;
     dynamic_reconfigure::Server<driverless_test::driverless_Config>::CallbackType f;
-    double prop;
-    double inte;
-    double diff;
+
+    pid_ctrl_t* pid_ctrl = new(pid_ctrl_t);
     double endlat;
     double endlon;
     int speed;
+    double yaw_error;
 };
 int main(int argc, char **argv)
 {

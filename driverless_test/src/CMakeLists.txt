@@ -9,13 +9,14 @@ target_link_libraries(gps_gps_com
                  
 add_library(upper_control upper_control.cpp)
 target_link_libraries(upper_control
+					  pid_controller
                       ${catkin_LIBRARIES})
                            
 add_library(lower_com lower_com.cpp)
 target_link_libraries(lower_com
 					  serial_open
                       ${catkin_LIBRARIES})
-                      
+                                         
 add_executable(serial_open serial_open.cpp)
 
 if(catkin_EXPORTED_TARGETS)
@@ -31,6 +32,7 @@ target_link_libraries(serial_open
 )
 
 target_link_libraries(serial_open
+	pid_controller
 	upper_control
 	${catkin_LIBRARIES}
 )

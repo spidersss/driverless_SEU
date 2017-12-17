@@ -207,7 +207,7 @@ target_link_libraries(gps ${catkin_LIBRARIES})
 add_dependencies(gps ${${PROJECT_NAME}_EXPORTED_TARGETS})
 add_dependencies(gps ${catkin_EXPORTED_TARGETS})
 
-add_executable(upper_control src/upper_control.cpp)
+add_executable(upper_control src/upper_control.cpp src/pid_controller.cpp)
 target_link_libraries(upper_control ${catkin_LIBRARIES})
 add_dependencies(upper_control ${${PROJECT_NAME}_EXPORTED_TARGETS})
 add_dependencies(upper_control ${catkin_EXPORTED_TARGETS})

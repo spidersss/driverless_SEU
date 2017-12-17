@@ -211,7 +211,7 @@ add_executable(upper_control src/upper_control.cpp)
 target_link_libraries(upper_control ${catkin_LIBRARIES})
 add_dependencies(upper_control ${${PROJECT_NAME}_EXPORTED_TARGETS})
 add_dependencies(upper_control ${catkin_EXPORTED_TARGETS})
-add_dependencies(upper_control driverless_test_gencg)
+add_dependencies(upper_control driverless_test_gencfg)
 
 add_executable(lower_com src/serial_open.cpp src/lower_com.cpp)
 target_link_libraries(lower_com ${catkin_LIBRARIES})
