@@ -3,6 +3,7 @@
 	<node pkg="driverless_test" type="upper_control" name="upper_node" respawn="true" ns="my_space">
 		<param name="endlat" value="31.91334" />
 		<param name="endlon" value="118.81231"/>
+		<param name="speed" value="5"/>
 	</node>
 	<node pkg="driverless_test" type="lower_com" name="lower_node" args="/dev/ttyS1" output="screen" respawn="true" ns="my_space"/>
 </launch>

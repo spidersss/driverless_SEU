@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   message_generation
+  dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
@@ -90,10 +91,10 @@ generate_messages(
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
+generate_dynamic_reconfigure_options(
+   cfg/follow_path.cfg
 #   cfg/DynReconf2.cfg
-# )
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -217,6 +218,6 @@ add_dependencies(lower_com ${${PROJECT_NAME}_EXPORTED_TARGETS})
 add_dependencies(lower_com ${catkin_EXPORTED_TARGETS})
 
 add_executable(gps_record src/gps_record.cpp)
-target_link_libraries(lower_com ${catkin_LIBRARIES})
-add_dependencies(lower_com ${${PROJECT_NAME}_EXPORTED_TARGETS})
-add_dependencies(lower_com ${catkin_EXPORTED_TARGETS})
+target_link_libraries(gps_record ${catkin_LIBRARIES})
+add_dependencies(gps_record ${${PROJECT_NAME}_EXPORTED_TARGETS})
+add_dependencies(gps_record ${catkin_EXPORTED_TARGETS})

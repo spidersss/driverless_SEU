@@ -1,10 +1,12 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "dynamic_reconfigure/server.h"
 
 #include <math.h>
 
 #include "driverless_test/gps_data.h"
 #include "driverless_test/control_data.h"
+#include "driverless_test/follow_path.cfg"
 #define pi 3.1415926
 
 driverless_test::control_data control_data;
@@ -17,6 +19,8 @@ int visit_flag = 0;
 float add_part = 25;
 float pre_steer = 90;
 float prop = 1.0;
+float inte = 0.0;
+float diff = 0.0;
 int times = 0;
 	
 int speed = 10;

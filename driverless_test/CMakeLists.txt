@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   message_generation
+  dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
@@ -90,10 +91,10 @@ generate_messages(
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
+generate_dynamic_reconfigure_options(
+   cfg/follow_path.cfg
 #   cfg/DynReconf2.cfg
-# )
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -210,6 +211,7 @@ add_executable(upper_control src/upper_control.cpp)
 target_link_libraries(upper_control ${catkin_LIBRARIES})
 add_dependencies(upper_control ${${PROJECT_NAME}_EXPORTED_TARGETS})
 add_dependencies(upper_control ${catkin_EXPORTED_TARGETS})
+add_dependencies(upper_control follow_path.cfg)
 
 add_executable(lower_com src/serial_open.cpp src/lower_com.cpp)
 target_link_libraries(lower_com ${catkin_LIBRARIES})
