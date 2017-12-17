@@ -2,11 +2,11 @@
 #include "std_msgs/String.h"
 #include "dynamic_reconfigure/server.h"
 
-
 #include <math.h>
 
 #include "driverless_test/gps_data.h"
 #include "driverless_test/control_data.h"
+#include "driverless_test/driverless_Config.h"
 #define pi 3.1415926
 
 driverless_test::control_data control_data;
@@ -18,12 +18,18 @@ int stop_flag = 0;
 int visit_flag = 0;
 float add_part = 25;
 float pre_steer = 90;
-float prop = 1.0;
-float inte = 0.0;
-float diff = 0.0;
 int times = 0;
-	
+double prop = 1.0;
 int speed = 10;
+
+void callbackConfig(driverless_test::driverless_Config &config, uint32_t level)
+{
+	ROS_INFO("Reconfigure Request: %lf %lf %lf %lf",
+		config.prop,
+		config.inte,
+		config.diff,
+		config.size);
+}
 
 void controlCallback(const driverless_test::gps_data::ConstPtr& gps_msg)
 {
@@ -67,7 +73,13 @@ int main(int argc, char **argv)
 {
 
   ros::init(argc, argv, "upper_control");
-
+  
+  dynamic_reconfigure::Server<driverless_test::driverless_Config> server;
+  dynamic_reconfigure::Server<driverless_test::driverless_Config>::CallbackType f;
+  
+  f = boost::bind(&callbackConfig, _1, _2);
+  server.setCallback(f);
+  
   ros::NodeHandle n;
   ros::param::get("~endlat", endlat);
   ros::param::get("~endlon", endlon);
