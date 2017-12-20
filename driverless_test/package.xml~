@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="2.0"?>
 <package format="2">
   <name>driverless_test</name>
   <version>0.1.0</version>
@@ -21,5 +21,13 @@
   <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>message_runtime</exec_depend>
-
+   
+  <depend>fake_localization</depend>
+  <depend>laser_filters</depend>
+  <depend>map_server</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>tf</depend>
+  <depend>urdf</depend>
+  <depend>xacro</depend>
+  <depend>gazebo_ros</depend>
 </package>
