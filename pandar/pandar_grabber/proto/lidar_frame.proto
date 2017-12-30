@@ -1,0 +1,17 @@
+syntax = "proto2";
+package hesai;
+
+message Scan {
+	required uint64 timestamp = 1;
+	message Measure {
+		required float range = 1;
+		required float intensity = 2;
+		required float azimuth = 3;
+		}
+	message Sweep {	// a sweep is the returns of a single detector spinning from 0 to 360 degree
+		required float elev = 1;
+		repeated Measure meas = 2; 
+		}
+	repeated Sweep sweeps = 2;
+}
+

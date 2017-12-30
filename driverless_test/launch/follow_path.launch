@@ -1,0 +1,13 @@
+<launch>
+	 <!-- Logger config -->
+  	<env name="ROSCONSOLE_CONFIG_FILE"
+       value="$(find driverless_test)/config/driverless_test.config"/>
+
+	<node pkg="driverless_test" type="gps" name="gps_node" args="/dev/ttyS0" respawn="true" ns="my_space"/>
+	<node pkg="driverless_test" type="upper_control" name="upper_node" output="screen" respawn="true" ns="my_space">
+		<param name="endlat" value="31.81334" />
+		<param name="endlon" value="118.71231"/>
+		<param name="speed" value="5"/>
+	</node>
+	<node pkg="driverless_test" type="lower_com" name="lower_node" args="/dev/ttyS1" output="screen" respawn="true" ns="my_space"/>
+</launch>

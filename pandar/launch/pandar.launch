@@ -1,0 +1,14 @@
+<launch>
+	<!-- declare arguments with default values -->
+	<arg name="device_ip" default="" />
+	<arg name="frame_id" default="pandar" />
+	<arg name="pcap" default="" />
+	<arg name="port" default="2368" />
+
+	<node pkg="pandar_ros" name="pandar_node" type="pandar_node" output="screen">
+		<param name="device_ip" value="$(arg device_ip)" type="str"/>
+		<param name="frame_id" value="$(arg frame_id)" type="str"/>
+		<param name="pcap" value="$(arg pcap)" type="str"/>
+		<param name="port" value="$(arg port)" type="int"/>
+	</node>
+</launch>
