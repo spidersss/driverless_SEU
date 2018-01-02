@@ -233,3 +233,11 @@ add_dependencies(pcl_partitioning ${catkin_EXPORTED_TARGETS})
 add_executable(pcl_segmentation src/pcl_segmentation.cpp)
 target_link_libraries(pcl_segmentation ${catkin_LIBRARIES})
 add_dependencies(pcl_segmentation ${catkin_EXPORTED_TARGETS})
+
+add_executable(slam_test src/slam_test.cpp)
+target_link_libraries(slam_test ${catkin_LIBRARIES})
+add_dependencies(slam_test ${catkin_EXPORTED_TARGETS})
+
+add_executable(slam_test2 src/slam_test2.cpp)
+target_link_libraries(slam_test2 ${catkin_LIBRARIES})
+add_dependencies(slam_test2 ${catkin_EXPORTED_TARGETS})

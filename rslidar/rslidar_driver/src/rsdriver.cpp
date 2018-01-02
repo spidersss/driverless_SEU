@@ -22,7 +22,7 @@ namespace rs_driver
 rslidarDriver::rslidarDriver(ros::NodeHandle node, ros::NodeHandle private_nh)    
 {
     // use private node handle to get parameters
-    private_nh.param("frame_id", config_.frame_id, std::string("map"));
+    private_nh.param("frame_id", config_.frame_id, std::string("horizontal_vlp16_link"));
 
     std::string tf_prefix = tf::getPrefixParam(private_nh);
     ROS_DEBUG_STREAM("tf_prefix: " << tf_prefix);
