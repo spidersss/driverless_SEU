@@ -22,7 +22,7 @@ namespace rs_driver
 rslidarDriver::rslidarDriver(ros::NodeHandle node, ros::NodeHandle private_nh)    
 {
     // use private node handle to get parameters
-    private_nh.param("frame_id", config_.frame_id, std::string("horizontal_vlp16_link"));
+    private_nh.param("frame_id", config_.frame_id, std::string("rslidar"));
 
     std::string tf_prefix = tf::getPrefixParam(private_nh);
     ROS_DEBUG_STREAM("tf_prefix: " << tf_prefix);
@@ -52,9 +52,10 @@ rslidarDriver::rslidarDriver(ros::NodeHandle node, ros::NodeHandle private_nh)
 
     // default number of packets for each scan is a single revolution
     // (fractions rounded up)
-   /* config_.npackets = (int) ceil(packet_rate / frequency);
-    private_nh.getParam("npackets", config_.npackets);
-    */
+    //config_.npackets = (int) ceil(packet_rate / frequency);
+    //config_.npackets = 1;
+    //private_nh.getParam("npackets", config_.npackets);
+    
     int npackets = (int) ceil(packet_rate / frequency);
     private_nh.param("npackets", config_.npackets, npackets);
     ROS_INFO_STREAM("publishing " << config_.npackets << " packets per scan");

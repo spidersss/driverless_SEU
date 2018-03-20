@@ -5,15 +5,18 @@
 #include "driverless_test/control_data.h"
 
 int fd_lower;
-int se_buf[4];
+//int se_buf[4];
+int se_buf[1];
 void lowerCallback(const driverless_test::control_data::ConstPtr& control_data)
 {
   ROS_INFO("steer: %d\tspeed: %d\tpower: %d", control_data->steer, control_data->speed, control_data->power);
-  se_buf[0] = 255;
+/*  se_buf[0] = 255;
   se_buf[1] = control_data->steer;
   se_buf[2] = control_data->speed;
   se_buf[3] = control_data->power;
-  write(fd_lower, se_buf, 4);
+*/
+  se_buf[0] = control_data->steer;
+  write(fd_lower, se_buf, 1);
   
 }
 

@@ -15,7 +15,7 @@ class cloudHandler
 public:
 	cloudHandler()
 	{
-		lidar_sub = nh.subscribe("rslidar", 10, &cloudHandler::cloudCB, this);
+		lidar_sub = nh.subscribe("rslidar_points", 10, &cloudHandler::cloudCB, this);
 		imu_sub = nh.subscribe("an_device/Imu", 10, &cloudHandler::cloudImu, this);
 		lidar_pub = nh.advertise<sensor_msgs::PointCloud2>("points2", 1);
 		imu_pub = nh.advertise<sensor_msgs::Imu>("imu", 1);
@@ -25,7 +25,6 @@ public:
 	{
 		sensor_msgs::PointCloud2 output;
 		output = input;
-		output.header.stamp = ros::Time(header.stamp.toSec()-0.04);
 		output.header.seq = 0;
 		lidar_pub.publish(output);
 	}
