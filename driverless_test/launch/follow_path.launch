@@ -5,10 +5,7 @@
 
 	<node pkg="driverless_test" type="gps" name="gps_node" args="/dev/ttyUSB0" respawn="true"/>
 	<node pkg="driverless_test" type="upper_control" name="upper_node" output="screen" respawn="true">
-		<param name="beglat" value="31.88644418" />
-		<param name = "beglon" value ="118.81058288" />
-		<param name="endlat" value="31.88722013" />
-		<param name="endlon" value="118.81050525"/>
+
 		<param name="speed" value="5"/>
 	</node>
 	<node pkg="driverless_test" type="lower_com" name="lower_node" args="/dev/ttyUSB1" output="screen" respawn="true"/>
