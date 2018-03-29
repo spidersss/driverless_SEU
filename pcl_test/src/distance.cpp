@@ -31,10 +31,11 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 
 	pcl::VoxelGrid<pcl::PCLPointCloud2> sor;
 	sor.setInputCloud(cloudPtr);
-	sor.setLeafSize (1.5f, 1.5f, 1.5f);
+	sor.setLeafSize (0.5f, 0.5f, 0.5f);
 	sor.filter(cloud_filtered);//后期将点连成线，形成赛道
 	
 	pcl::fromPCLPointCloud2(cloud_filtered, *cloudxyz);
+	pcl::toROSMsg(*cloudxyz, output);
 	
 	std::cout<<cloudxyz->points.size()<<std::endl;
 	std::vector<pcl::PointXYZ, Eigen::aligned_allocator_indirection<pcl::PointXYZ> >::iterator it;
@@ -47,8 +48,10 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	}
 
 	//pub.publish(output);
-	pcl::toROSMsg(*cloudxyz, output);
+	
 	pubxyz.publish(output);
+	//delete cloudxyz;
+	//delete cloud;
 }
 
 int main(int argc, char** argv)

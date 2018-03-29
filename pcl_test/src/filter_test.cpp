@@ -44,12 +44,17 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	for(it = cloudxyz->points.begin(); it != cloudxyz->points.end(); it++)
 	{
 		std::cout<<it->x<<"\t"<<it->y<<"\t"<<it->z<<std::endl;
-		if(it->x>-3 && it->x<3 && it->y>-1 && it->y<1){
+		if(it->x<-5 || it->x>5 || it->y>0 || it->y<-50){
 			it->x = NAN;
 			it->y = NAN;
 			it->z = NAN;
 		}
-		if(it->z < -1.0){
+		if(it->z < -0.1 && it->x != NAN){
+			it->x = NAN;
+			it->y = NAN;
+			it->z = NAN;
+		}
+		if(it->z > 1 && it->x != NAN){
 			it->x = NAN;
 			it->y = NAN;
 			it->z = NAN;
@@ -76,7 +81,7 @@ int main(int argc, char** argv)
 	ros::init (argc, argv, "pcl_test");
 	ros::NodeHandle n;
 	
-	ros::Subscriber sub = n.subscribe("rslidar_points", 1, cloud_cb);
+	ros::Subscriber sub = n.subscribe("pandar_points", 1, cloud_cb);
 	pub = n.advertise<sensor_msgs::PointCloud2> ("cloud_filtered", 1);
 	pubxyz = n.advertise<sensor_msgs::PointCloud2> ("filter_z", 1);
 	ros::spin();

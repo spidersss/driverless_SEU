@@ -69,11 +69,11 @@ public:
 	    enable_flag = 0;
 	    disToend = 3.0;
 		
-		endlat[0] = 31.88685107;
-		endlon[0] = 118.81001789;
+		endlat[0] = 31.88668392;
+		endlon[0] = 118.80989973;
 		endturn[0] = 270;
-		endlat[1] = 31.88666064;
-		endlon[1] = 118.80938060;
+		endlat[1] = 31.88664502;
+		endlon[1] = 118.80960257;
 		endturn[1] = 180.0;
 		endlat[2] = 33.88722013;
 		endlon[2] = 120.81050525;
@@ -113,7 +113,7 @@ public:
 	  ROS_INFO("t_yaw: %f\tnowYaw%f\tdisToend: %f", t_yaw,yaw_now, disToend);	
 	  
 	  disToend = distance(gps_msg->lat, gps_msg->lon, endlat[count], endlon[count]);
-	  if( disToend < 1 && !enable_flag){
+	  if( disToend < 3 && !enable_flag){
 		enable_flag = 1;
 	  }
 	  if(enable_flag){ 

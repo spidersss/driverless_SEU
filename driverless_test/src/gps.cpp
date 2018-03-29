@@ -46,7 +46,8 @@ int main(int argc, char **argv)
     gps_data.yaw = gps_mes.yaw;
 
     //ROS_INFO("id: %d\tlen: %d\tlat: %f\tlon: %f\tyaw: %f", gps_data.id,gps_data.len,gps_data.lat,gps_data.lon,gps_data.yaw);
-	printf("%.8lf\t%.8lf\t%.1lf\n", gps_data.lat, gps_data.lon, gps_data.yaw);
+	//printf("%.8lf\t%.8lf\t%.1lf\n", gps_data.lat, gps_data.lon, gps_data.yaw);
+	printf("%.8lf,%.8lf\n", gps_data.lat, gps_data.lon);
    	gps_pub.publish(gps_data);
    	
     ros::spinOnce();

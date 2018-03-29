@@ -241,3 +241,7 @@ add_dependencies(slam_test ${catkin_EXPORTED_TARGETS})
 add_executable(slam_test2 src/slam_test2.cpp)
 target_link_libraries(slam_test2 ${catkin_LIBRARIES})
 add_dependencies(slam_test2 ${catkin_EXPORTED_TARGETS})
+
+add_executable(cluster_extraction src/cluster_extraction.cpp.cpp)
+target_link_libraries(cluster_extraction ${catkin_LIBRARIES})
+add_dependencies(cluster_extraction ${catkin_EXPORTED_TARGETS})
