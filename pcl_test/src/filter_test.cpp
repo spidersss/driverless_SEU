@@ -15,50 +15,36 @@
 
 typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;  
 
-ros::Publisher pub;
 ros::Publisher pubxyz;
 
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 {
 	PointCloud::Ptr cloudxyz(new PointCloud);
 	
+	PointCloud::Ptr cloud_filtered(new PointCloud);
+	
 	pcl::PCLPointCloud2* cloud = new pcl::PCLPointCloud2;
 	pcl::PCLPointCloud2ConstPtr cloudPtr(cloud);
-	pcl::PCLPointCloud2 cloud_filtered;
 	
 	pcl_conversions::toPCL(*cloud_msg, *cloud);
 	
-	pcl::VoxelGrid<pcl::PCLPointCloud2> sor;
-	sor.setInputCloud(cloudPtr);
-	sor.setLeafSize (0.01f, 0.01f, 0.01f);
-	sor.filter(cloud_filtered);
-	
 	sensor_msgs::PointCloud2 output;
-	sensor_msgs::PointCloud2 output2;
-	pcl_conversions::fromPCL(cloud_filtered, output);
 	
 	pcl::fromPCLPointCloud2(*cloud, *cloudxyz);
 	
 	std::cout<<cloudxyz->points.size()<<std::endl;
 	std::vector<pcl::PointXYZ, Eigen::aligned_allocator_indirection<pcl::PointXYZ> >::iterator it;
+	//double lower = 0.0;
 	for(it = cloudxyz->points.begin(); it != cloudxyz->points.end(); it++)
-	{
-		std::cout<<it->x<<"\t"<<it->y<<"\t"<<it->z<<std::endl;
-		if(it->x<-5 || it->x>5 || it->y>0 || it->y<-50){
-			it->x = NAN;
-			it->y = NAN;
-			it->z = NAN;
+	{	
+		
+		if(it->x>-5 && it->x<5 && it->y<0 && it->y>-50 && it->z > -0.1 && it->z < 1 && it->x !=NAN && it->y  != NAN && it->z != NAN){
+		//if(it->x>-5 && it->x<5 && it->y<0 && it->y>-50 && it->z < 1 && it->x !=NAN && it->y  != NAN && it->z != NAN){
+			cloud_filtered->points.push_back (*it);
+			std::cout<<it->x<<"\t"<<it->y<<"\t"<<it->z<<std::endl;
+			//if((double)it->z < lower) lower = (double)it->z;
 		}
-		if(it->z < -0.1 && it->x != NAN){
-			it->x = NAN;
-			it->y = NAN;
-			it->z = NAN;
-		}
-		if(it->z > 1 && it->x != NAN){
-			it->x = NAN;
-			it->y = NAN;
-			it->z = NAN;
-		}
+		
 		/*
 		if(sqrt(it->x*it->x + it->y*it->y) < 3.0) 
 		{
@@ -69,11 +55,15 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 		*/
 
 	}
-	std::cout<<cloudxyz->points.size()<<std::endl;
-	pcl::toROSMsg(*cloudxyz, output2);
+	//std::cout<<"lower:"<<lower<<std::endl;
+	cloud_filtered->header = cloudxyz->header;
+	cloud_filtered->width = cloud_filtered->points.size ();
+  	cloud_filtered->height = 1;
+  	cloud_filtered->is_dense = false;
+	std::cout<<cloud_filtered->points.size()<<std::endl;
+	pcl::toROSMsg(*cloud_filtered, output);
 
-	pub.publish(output);
-	pubxyz.publish(output2);
+	pubxyz.publish(output);
 }
 
 int main(int argc, char** argv)
@@ -82,7 +72,6 @@ int main(int argc, char** argv)
 	ros::NodeHandle n;
 	
 	ros::Subscriber sub = n.subscribe("pandar_points", 1, cloud_cb);
-	pub = n.advertise<sensor_msgs::PointCloud2> ("cloud_filtered", 1);
 	pubxyz = n.advertise<sensor_msgs::PointCloud2> ("filter_z", 1);
 	ros::spin();
 }
